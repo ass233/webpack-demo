@@ -1,29 +1,31 @@
-const path = require('path');
 const webpack = require('webpack');
+const path = require('path');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
+const uglify = require('uglifyjs-webpack-plugin');
 var config = {
-    entry: './src/entry.js',
+    entry: {
+        entry: './src/entry.js',
+        entry2: './src/entry2.js'
+    },
     output: {
-        path: path.join(__dirname, 'dist'),
-        filename: 'bundle.js'
+        path: path.resolve(__dirname, 'dist'),
+        filename: '[name].js'
     },
     module: {
         rules: [{
-            test: /\.css/,
-            include: [
-                path.resolve(__dirname, 'src'),
-            ],
-            use: [
-                'style-loader',
-                'css-loader',
-            ]
-        }],
+            test: /\.css$/,
+            use: ['style-loader', 'css-loader']
+        }]
     },
     plugins: [
         new HTMLWebpackPlugin({
-            filename: 'index.html',
-            template: 'dist/index.html',
+            minify: {
+                removeAttributeQuotes: true,
+            },
+            hash: true,
+            template: 'src/index.html',
         }),
+        new uglify(),
     ],
     devServer: {
         contentBase: path.resolve(__dirname, 'dist'),
