@@ -76,3 +76,4 @@ jspm_packages
 .nuxt
 
 # Nuxt generate
+dist
